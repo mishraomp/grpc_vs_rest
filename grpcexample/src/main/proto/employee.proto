@@ -1,0 +1,34 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package com.om.example.grpc.struct;
+
+message EmployeeRequestByPhone {
+    string phone = 1;
+}
+
+message EmployeeResponse {
+    Employee employee = 1;
+}
+message Employee {
+    string firstName = 1;
+    string lastName = 2;
+    string phone = 3;
+    int32 age = 4;
+    Address address = 5;
+
+}
+message Address {
+    string addressLine1 = 1;
+    string addressLine2 = 2;
+    string city = 3;
+    string province = 4;
+    string postalCode = 5;
+}
+message AllEmployees {
+    repeated Employee items = 1;
+}
+
+service EmployeeService {
+    rpc getEmployeeDetailsByPhone (EmployeeRequestByPhone) returns (Employee);
+    rpc getEmployees(Employee) returns (AllEmployees);
+}
