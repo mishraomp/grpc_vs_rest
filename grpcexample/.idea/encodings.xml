@@ -3,5 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../grpcexample-client" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../spring-reactive-mongo-db" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../reactive-programming-docker/spring-reactive-mongo-db" charset="UTF-8" />
   </component>
 </project>

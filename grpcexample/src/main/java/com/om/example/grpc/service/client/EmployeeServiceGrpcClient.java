@@ -1,40 +1,38 @@
 package com.om.example.grpc.service.client;
 
-import com.om.example.grpc.service.EmployeeServiceGrpc;
 import com.om.example.grpc.struct.Employee;
-import com.om.example.grpc.struct.EmployeeRequestByPhone;
+import com.om.example.grpc.struct.EmployeeServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-@Component
 public class EmployeeServiceGrpcClient {
-    private EmployeeServiceGrpc.EmployeeServiceFutureStub employeeServiceFutureStub;
 
-    @Value("${grpc.port}")
-    private int port;
 
-    @PostConstruct
-    private void init() {
+    public Employee createEmployee(Employee employee) {
         ManagedChannel managedChannel = ManagedChannelBuilder
-                .forAddress("localhost", port).usePlaintext().build();
-
-        employeeServiceFutureStub =
-                EmployeeServiceGrpc.newFutureStub(managedChannel);
-    }
-
-    public Employee getEmployeeDetailsByPhone(String phoneNumber) {
-        EmployeeRequestByPhone req = EmployeeRequestByPhone.newBuilder().setPhone(phoneNumber).build();
-        com.google.common.util.concurrent.ListenableFuture<com.om.example.grpc.struct.Employee> result = employeeServiceFutureStub.getEmployeeDetailsByPhone(req);
+                .forAddress("localhost", 1020).usePlaintext().build();
+        EmployeeServiceGrpc.EmployeeServiceFutureStub employeeServiceFutureStub = EmployeeServiceGrpc.newFutureStub(managedChannel);
         try {
-            return result.get();
+            employeeServiceFutureStub.createEmployee(employee).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return Employee.newBuilder().build();
+    }
+
+    public List<Employee> getAllEmployees(Employee employee) {
+        ManagedChannel managedChannel = ManagedChannelBuilder
+                .forAddress("localhost", 1020).usePlaintext().build();
+        EmployeeServiceGrpc.EmployeeServiceFutureStub employeeServiceFutureStub = EmployeeServiceGrpc.newFutureStub(managedChannel);
+        try {
+            employeeServiceFutureStub.getAllEmployees(employee).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 }

@@ -2,33 +2,28 @@ syntax = "proto3";
 option java_multiple_files = true;
 package com.om.example.grpc.struct;
 
-message EmployeeRequestByPhone {
-    string phone = 1;
-}
 
 message EmployeeResponse {
-    Employee employee = 1;
+    int32 status = 1;
+    string message = 2;
+    Employee employee = 3;
 }
 message Employee {
-    string firstName = 1;
-    string lastName = 2;
-    string phone = 3;
-    int32 age = 4;
-    Address address = 5;
+    string employeeId = 1;
+    string employeeName = 2;
+    int32 age = 3;
 
 }
-message Address {
-    string addressLine1 = 1;
-    string addressLine2 = 2;
-    string city = 3;
-    string province = 4;
-    string postalCode = 5;
-}
-message AllEmployees {
-    repeated Employee items = 1;
+message AllEmployeesResponse {
+    int32 status = 1;
+    string message = 2;
+    repeated Employee items = 3;
 }
 
 service EmployeeService {
-    rpc getEmployeeDetailsByPhone (EmployeeRequestByPhone) returns (Employee);
-    rpc getEmployees(Employee) returns (AllEmployees);
+    rpc getAllEmployees (Employee) returns (AllEmployeesResponse);
+    rpc getEmployeeById (Employee) returns (EmployeeResponse);
+    rpc createEmployee (Employee) returns (EmployeeResponse);
+    rpc updateEmployee (Employee) returns (EmployeeResponse);
+    rpc deleteEmployee (Employee) returns (EmployeeResponse);
 }
